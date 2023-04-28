@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "975467059933",
+    "project_id": "ogma-de793",
+    "storage_bucket": "ogma-de793.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:975467059933:android:194e1b31e184d613825934",
+        "android_client_info": {
+          "package_name": "com.ogmaproject.ogma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "975467059933-ghe59qpa1mta8sop5mueiuoiaqilqokc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqlv0iHSIUy1BE3UleirXOSx1n8PSoYOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "975467059933-ghe59qpa1mta8sop5mueiuoiaqilqokc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
