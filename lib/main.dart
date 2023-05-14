@@ -6,7 +6,7 @@ import 'package:ogma/view/login_view.dart';
 import 'package:ogma/view/register_view.dart';
 import 'package:ogma/view/verify_email_view.dart';
 import 'firebase_options.dart';
-import 'dart:developer' as devtools show log;
+// import 'dart:developer' as devtools show log;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
