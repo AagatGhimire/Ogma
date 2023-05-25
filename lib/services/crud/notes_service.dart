@@ -9,8 +9,96 @@ class UnableToGetDocumentsDirectoryException implements Exception {}
 
 class DatabaseNotOpenException implements Exception {}
 
+class CouldNotDeleteUserException implements Exception {}
+
+class CouldNotFindUserException implements Exception {}
+
+class UserAlreadyExistsException implements Exception {}
+
 class NotesService {
   Database? _db;
+
+  Future<DatabaseNote> createNote({required DatabaseUser owner}) async {
+    final db = _getDatabaseOrThrow();
+    final dbUser = await getUser(email: owner.email);
+
+    // makes sure owner exists in the database with correct id
+    if (dbUser != owner) {
+      throw CouldNotFindUserException;
+    }
+
+    const text = '';
+    // creating the note
+    final noteId = await db.insert(
+      noteTable,
+      {
+        userIdColumn: owner.id,
+        textColumn: text,
+      },
+    );
+    final note = DatabaseNote(
+      id: noteId,
+      userId: owner.id,
+      text: text,
+    );
+    return note;
+  }
+
+  Future<DatabaseUser> getUser({required String email}) async {
+    final db = _getDatabaseOrThrow();
+    final results = await db.query(
+      userTable,
+      limit: 1,
+      where: 'email = ?',
+      whereArgs: [email.toLowerCase()],
+    );
+    if (results.isEmpty) {
+      throw CouldNotFindUserException();
+    } else {
+      return DatabaseUser.fromRow(results.first);
+    }
+  }
+
+  Future<DatabaseUser> createUser({required String email}) async {
+    final db = _getDatabaseOrThrow();
+    final results = await db.query(
+      userTable,
+      limit: 1,
+      where: 'email = ?',
+      whereArgs: [email.toLowerCase()],
+    );
+    if (results.isNotEmpty) {
+      throw UserAlreadyExistsException();
+    }
+    final userId = await db.insert(
+      userTable,
+      {
+        emailColumn: email.toLowerCase(),
+      },
+    );
+    return DatabaseUser(id: userId, email: email);
+  }
+
+  Future<void> deleteUser({required String email}) async {
+    final db = _getDatabaseOrThrow();
+    final deletedCount = await db.delete(
+      userTable,
+      where: 'email = ?',
+      whereArgs: [email.toLowerCase()],
+    );
+    if (deletedCount != 1) {
+      throw CouldNotDeleteUserException();
+    }
+  }
+
+  Database _getDatabaseOrThrow() {
+    final db = _db;
+    if (db == null) {
+      throw DatabaseNotOpenException();
+    } else {
+      return db;
+    }
+  }
 
   Future<void> close() async {
     final db = _db;
