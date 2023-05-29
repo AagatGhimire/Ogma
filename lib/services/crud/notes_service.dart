@@ -54,6 +54,8 @@ class NotesService {
       {
         textColumn: text,
       },
+      where: 'id = ?',
+      whereArgs: [note.id],
     );
     if (updateCount == 0) {
       throw CouldNotUpdateNoteException();
